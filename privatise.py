@@ -31,7 +31,7 @@ def main():
         sp = spotipy.Spotify(auth=token)
 
         offset = 0
-        limit = 20
+        limit = 50
         count = 0
         while True:
             playlists = sp.current_user_playlists(offset=offset, limit=limit)
