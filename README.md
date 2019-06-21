@@ -20,10 +20,9 @@ pip install -r requirements.txt
 
 python3 privatise.py [username]
 ```
-**Current limitation:** Only updates first 50 public playlists
 
 ## To-do list: 
-- [ ] Address playlist limit issue!
+- [X] Address playlist limit issue!
 - [ ] Add dry-run feature
 - [ ] Process in batches/by playlist group
 - [ ] Web app to allow flexibility (e.g. select/deselect playlists)
