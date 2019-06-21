@@ -28,23 +28,32 @@ def main():
     token = util.prompt_for_user_token(username, scope)
 
     if token:
-        sp = spotipy.Spotify(auth=token)        
-        playlists = sp.current_user_playlists()
-        public_playlists = filter_public(playlists['items'])
-        if len(public_playlists) > 0:
-            pretty_print_playlists(public_playlists)
-            confirm = input("Make the above listed playlists private? (yes/no) ")
+        sp = spotipy.Spotify(auth=token)
 
-            if confirm == 'yes':
+        offset = 0
+        limit = 20
+        count = 0
+        while True:
+            playlists = sp.current_user_playlists(offset=offset, limit=limit)
+            public_playlists = filter_public(playlists['items'])
+
+            if len(public_playlists) > 0:
+                print("Privatising the following public playlists.. \n")
+                pretty_print_playlists(public_playlists)
                 make_playlists_private(sp, username, public_playlists)
-                print('Playlists updated!')
+                count += len(public_playlists)
+
+            next_page = playlists['next']
+            if next_page:
+                offset += limit
             else:
-                print("No playlists updated.")
-        else:
-            print("No public playlists to update!")
+                if count == 0: 
+                    print("No public playlists were found.")
+                else:
+                    print(f"{count} public playlists have been made private.")
+                break
     else:
         print ("Can't get token for", username)
-
 
 if __name__ == "__main__":
     main()
